@@ -1,0 +1,303 @@
+<!doctype html>
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <link type="text/css" rel="stylesheet" href="fireworks.css">
+
+    <title>Fireworks Widget</title>
+
+    <script type="text/javascript" language="javascript" src="fireworks/fireworks.nocache.js"></script>
+</head>
+
+<body style="">
+    <noscript>
+        <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+            Your web browser must have JavaScript enabled
+            in order for this application to display correctly.
+        </div>
+    </noscript>
+
+    <h1>Reusing Reactome's Fireworks Widget?</h1>
+
+    <div class="fireworks">
+        <div id="fireworksHolder"></div>
+    </div>
+
+    <div style="clear: left; max-width: 650px;">
+        <h2>What is it?</h2>
+        <p style="text-align: justify">
+            The Pathways Overview is a genome-wide, hierarchical visualization of Reactome pathways in a space-filling graph.
+            Each node represents a pathway, and the size of the node reflects the number of entities (proteins, small molecules,
+            genes, etc) belonging to that pathway. The edges represent the connection between the different pathway nodes within
+            the Reactome pathway hierarchy.
+        </p>
+        <p style="text-align: justify">
+            The central node within each pathway burst is the parent (or top-level) pathway node. Each child (or sub level)
+            pathway belonging to the pathway hierarchy is represented as a node, which is projected outwards from the central
+            node and connected to the subsequent pathway in the hierarchy, until the lowest level pathway is reached.
+            When the graph initially loads, the Pathways Overview display automatically fits all the nodes and edges into the
+            existing area.
+        </p>
+    </div>
+
+    <div style="clear: left">
+        <h2>How to use it?</h2>
+        <p>To reuse our viewer you need to follow the following steps</p>
+    </div>
+
+    <div class="example">
+        <h4>1. Include the fireworks javascript dependency in you HTML header</h4>
+        <pre class="prettyprint code" >
+    &lt;script type="text/javascript" language="javascript" src="http://reactome.org/FireworksJs/fireworks/fireworks.nocache.js"&gt;&lt;/script&gt;
+        </pre>
+
+        <h4>2. Add a place holder in the body of your web page</h4>
+        <pre class="prettyprint code" >
+    &lt;div id="fireworksHolder"&gt;&lt;/div&gt;
+        </pre>
+
+        <h4>3. Set a proxy in your server under "/reactome" pointing to "http://reactome.org"</h4>
+
+        <h4>4. Create and initialise the fireworks viewer from your javascript code</h4>
+        <pre class="prettyprint code" >
+    //Creating the Reactome Fireworks widget
+    //Take into account a proxy needs to be set up in your server side pointing to reactome.org
+    function onReactomeFireworksReady(){  //This function is automatically called when the widget code is ready to be used
+        var fireworks = Reactome.Fireworks.create({
+            "proxyPrefix" : "/reactome",
+            "placeHolder" : "fireworksHolder",
+            "width" : 900,
+            "height" : 450
+        });
+
+        //Adding different listeners
+
+        fireworks.onFireworksLoaded(function (loaded) {
+            console.info("Loaded ", loaded);
+        });
+
+        fireworks.onNodeHovered(function (hovered){
+            console.info("Hovered ", hovered);
+        });
+
+        fireworks.onNodeSelected(function (selected){
+            console.info("Selected ", selected);
+        });
+    }
+        </pre>
+    </div>
+
+    <div style="clear: left">
+        <h2>Current available options for listeners and methods:</h2>
+
+        <div class="CustomTable">
+        <table>
+            <tr>
+                <td width="250px">Method</td>
+                <td width="250px">Params</td>
+                <td>Description</td>
+            </tr>
+            <tr>
+                <td><b>create</b> :: Constructor<br>
+                    &nbsp;&nbsp;Reactome.Fireworks.create(params);
+                </td>
+                <td>
+                    <b>param</b> :: json object<br>
+                    &nbsp;{<br>
+                    &nbsp;&nbsp;&nbsp;'proxyPrefix' : string,<br>
+                    &nbsp;&nbsp;&nbsp;'placeHolder' : string,<br>
+                    &nbsp;&nbsp;&nbsp;'width' : int (optional),<br>
+                    &nbsp;&nbsp;&nbsp;'height' : int (optional)<br>
+                    &nbsp;}
+                </td>
+                <td>Creates and returns a new Reactome.Fireworks object</td>
+            </tr>
+            <tr>
+                <td>
+                    <b>highlightNode(stId)</b> :: void
+                </td>
+                <td>
+                    Item stable identifier<br>
+                    <b>stId</b> : string
+                </td>
+                <td>
+                    Highlights the specified item if it exists in the fireworks
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>resetAnalysis()</b> :: void
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    Resets the analysis overlay
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>resetHighlight()</b> :: void
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    Clears the highlights in the fireworks
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>resetSelection()</b> :: void
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    Clears the selection in the fireworks
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>resize(width, height)</b> :: void
+                </td>
+                <td>
+                    <b>widht</b>: int<br>
+                    <b>height</b>: int
+                </td>
+                <td>
+                    Resizes the viewport to the specified with and height
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>selectNode(stId)</b> :: void
+                </td>
+                <td>
+                    Item stable identifier<br>
+                    <b>stId</b> : string
+                </td>
+                <td>
+                    Selects the specified item if it exists in the fireworks
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>setAnalysisToken(token, resource)</b> :: void
+                </td>
+                <td>
+                    Analysis token<br>
+                    <b>token</b> : string<br>
+                    Resource<br>
+                    <b>resource</b> : string
+                </td>
+                <td>
+                    Overlays the analysis result corresponding to the specified (token, resource)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>showAll()</b> :: void
+                </td>
+                <td>
+
+                </td>
+                <td>
+                    Shows all the pathways in the viewport
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>onNodeSelected(function(obj))</b> :: void
+                </td>
+                <td>
+                    <b>obj</b> is selected item:<br>
+                    &nbsp;{<br>
+                    &nbsp;&nbsp;&nbsp;'stId' : string,<br>
+                    &nbsp;&nbsp;&nbsp;'displayName' : string,<br>
+                    &nbsp;&nbsp;&nbsp;'schemaClass' : string,<br>
+                    &nbsp;}
+                </td>
+                <td>
+                    The function is called when an object in the fireworks is selected by the user action
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>onNodeHovered(function(obj))</b> :: void
+                </td>
+                <td>
+                    <b>obj</b> is hovered item:<br>
+                    &nbsp;{<br>
+                    &nbsp;&nbsp;&nbsp;'stId' : string,<br>
+                    &nbsp;&nbsp;&nbsp;'displayName' : string,<br>
+                    &nbsp;&nbsp;&nbsp;'schemaClass' : string,<br>
+                    &nbsp;}
+                </td>
+                <td>
+                    The function is called when an object in the fireworks is hovered by the user action
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>onFireworksLoaded(function(id))</b> :: void
+                </td>
+                <td>
+                    The db identifier of the loaded species in fireworks<br>
+                    <b>id</b>: string
+                </td>
+                <td>
+                    The function is called when a fireworks is loaded in the viewer
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>onAnalysisReset(function())</b> :: void
+                </td>
+                <td>
+                    The function receives no parameters
+                </td>
+                <td>
+                    The function is called when the users resets the analysis overlay<br><br>
+                    fireworks.onAnalysisReset(function(){ /* your code here */ });
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>onCanvasNotSupported(function())</b> :: void
+                </td>
+                <td>
+                    The function receives no parameters.
+                </td>
+                <td>
+                    The function is called when the browser doesn't support HTML5 Canvas so the viewer cannot be instantiated<br><br>
+                    fireworks.onCanvasNotSupported(function(){ /* your code here */ });
+                </td>
+            </tr>
+        </table>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    function onReactomeFireworksReady() {
+        fireworks = Reactome.Fireworks.create({
+            "placeHolder": "fireworksHolder",
+            "width": 900,
+            "height": 450
+        });
+        fireworks.onFireworksLoaded(function (loaded) {
+            console.info("Loaded ", loaded);
+        });
+        fireworks.onNodeHovered(function (hovered) {
+            console.info("Hovered ", hovered);
+        });
+        fireworks.onNodeSelected(function (selected) {
+            console.info("Selected ", selected);
+        });
+    }
+</script>
+</html>

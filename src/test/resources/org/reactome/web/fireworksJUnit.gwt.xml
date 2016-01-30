@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to="fireworks">
+  <!-- Inherit our applications main module.                      -->
+  <inherits name='org.reactome.web.fireworks.Fireworks' />
+  <inherits name="org.timepedia.exporter.Exporter"/>
+
+  <!-- Specify the path to any remote services.                   -->
+  <servlet path="/fireworks/greet" class="org.reactome.web.server.GreetingServiceImpl" />
+
+</module>
