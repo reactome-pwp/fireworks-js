@@ -15,7 +15,6 @@ import org.reactome.web.fireworks.events.FireworksLoadedEvent;
 import org.reactome.web.fireworks.events.NodeHoverEvent;
 import org.reactome.web.fireworks.events.NodeSelectedEvent;
 import org.reactome.web.fireworks.handlers.*;
-import org.reactome.web.fireworks.util.Console;
 import org.reactome.web.pwp.model.client.RESTFulClient;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
@@ -75,7 +74,7 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
         if (loader == null) {
             RESTFulClient.SERVER = server;
             FireworksFactory.ILLUSTRATION_SERVER = SERVER;
-            Console.VERBOSE = true;
+            FireworksFactory.CONSOLE_VERBOSE = false;
             FireworksFactory.OPEN_NODE_ACTION = false;
             FireworksFactory.SHOW_DIAGRAM_BTN = false;
             loader = new FireworksLoader(fireworks);
