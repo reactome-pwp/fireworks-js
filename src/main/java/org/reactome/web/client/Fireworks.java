@@ -73,6 +73,7 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
 
         if (loader == null) {
             RESTFulClient.SERVER = server;
+            FireworksFactory.SERVER = server;
             FireworksFactory.ILLUSTRATION_SERVER = SERVER;
             FireworksFactory.CONSOLE_VERBOSE = false;
             FireworksFactory.OPEN_NODE_ACTION = false;
