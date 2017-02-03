@@ -5,16 +5,12 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
+import org.reactome.web.analysis.client.AnalysisClient;
 import org.reactome.web.client.handlers.*;
 import org.reactome.web.client.model.FireworksObject;
 import org.reactome.web.client.model.JsProperties;
 import org.reactome.web.fireworks.client.FireworksFactory;
 import org.reactome.web.fireworks.client.FireworksViewer;
-import org.reactome.web.fireworks.events.CanvasNotSupportedEvent;
-import org.reactome.web.fireworks.events.FireworksLoadedEvent;
-import org.reactome.web.fireworks.events.NodeHoverEvent;
-import org.reactome.web.fireworks.events.NodeSelectedEvent;
-import org.reactome.web.fireworks.handlers.*;
 import org.reactome.web.pwp.model.client.RESTFulClient;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
@@ -45,17 +41,25 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
 
     private Set<JsFireworksHandler> handlers;
 
+    private String analysisToken, analysisResource;
+
     private Fireworks() {
         handlers = new HashSet<>();
     }
 
     public static Fireworks create(JavaScriptObject input) {
         JsProperties jsProp = new JsProperties(input);
-        return create(jsProp.get("placeHolder"), jsProp.getInt("species", 48887), jsProp.get("proxyPrefix", ""), jsProp.getInt("width", 500), jsProp.getInt("height", 400));
+        return create(
+                jsProp.get("placeHolder"),
+                jsProp.getInt("species", 48887),
+                jsProp.get("proxyPrefix", SERVER),
+                jsProp.getInt("width", 500),
+                jsProp.getInt("height", 400)
+        );
     }
 
     public static Fireworks create(String placeHolder, int species, int width, int height) {
-        return create(placeHolder, species, "", width, height);
+        return create(placeHolder, species, SERVER, width, height);
     }
 
     public static Fireworks create(String placeHolder, int species, String server, final int width, final int height) {
@@ -73,6 +77,7 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
 
         if (loader == null) {
             RESTFulClient.SERVER = server;
+            AnalysisClient.SERVER = server;
             FireworksFactory.SERVER = server;
             FireworksFactory.ILLUSTRATION_SERVER = SERVER;
             FireworksFactory.CONSOLE_VERBOSE = false;
@@ -130,6 +135,7 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
 
     public void resetAnalysis() {
         viewer.resetAnalysis();
+        analysisToken = analysisResource = null;
     }
 
     public void resetHighlight() {
@@ -157,10 +163,15 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
     }
 
     public void setAnalysisToken(String token, String resource) {
-        viewer.setAnalysisToken(token, resource);
+        if (viewer != null) {
+            viewer.setAnalysisToken(token, resource);
+        } else {
+            this.analysisToken = token;
+            this.analysisResource = resource;
+        }
     }
 
-    public void showAll(){
+    public void showAll() {
         viewer.showAll();
     }
 
@@ -170,6 +181,9 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
         update(viewer);
         for (JsFireworksHandler handler : handlers) {
             addHandler(handler);
+        }
+        if (analysisToken != null && analysisResource != null) {
+            viewer.setAnalysisToken(analysisToken, analysisResource);
         }
     }
 
@@ -194,58 +208,23 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
 
         if (handler instanceof JsCanvasNotSupported) {
             final JsCanvasNotSupported aux = (JsCanvasNotSupported) handler;
-            viewer.addCanvasNotSupportedHandler(new CanvasNotSupportedHandler() {
-                @Override
-                public void onCanvasNotSupported(CanvasNotSupportedEvent event) {
-                    aux.canvasNotSupported();
-                }
-            });
+            viewer.addCanvasNotSupportedHandler(event -> aux.canvasNotSupported());
         } else if (handler instanceof JsFireworksLoadedHandler) {
             final JsFireworksLoadedHandler aux = (JsFireworksLoadedHandler) handler;
-            viewer.addFireworksLoaded(new FireworksLoadedHandler() {
-                @Override
-                public void onFireworksLoaded(FireworksLoadedEvent event) {
-                    aux.loaded(event.getSpeciesId());
-                }
-            });
+            viewer.addFireworksLoaded(event -> aux.loaded(event.getSpeciesId()));
         } else if (handler instanceof JsNodeSelectedHandler) {
             final JsNodeSelectedHandler aux = (JsNodeSelectedHandler) handler;
-            viewer.addNodeSelectedHandler(new NodeSelectedHandler() {
-                @Override
-                public void onNodeSelected(NodeSelectedEvent event) {
-                    aux.selected(FireworksObject.create(event.getNode()));
-                }
-            });
+            viewer.addNodeSelectedHandler(event -> aux.selected(FireworksObject.create(event.getNode())));
             //Also adding the node selected reset returning null
-            viewer.addNodeSelectedResetHandler(new NodeSelectedResetHandler() {
-                @Override
-                public void onNodeSelectionReset() {
-                    aux.selected(null);
-                }
-            });
+            viewer.addNodeSelectedResetHandler(() -> aux.selected(null));
         } else if (handler instanceof JsNodeHoveredHandler) {
             final JsNodeHoveredHandler aux = (JsNodeHoveredHandler) handler;
-            viewer.addNodeHoverHandler(new NodeHoverHandler() {
-                @Override
-                public void onNodeHover(NodeHoverEvent event) {
-                    aux.hovered(FireworksObject.create(event.getNode()));
-                }
-            });
+            viewer.addNodeHoverHandler(event -> aux.hovered(FireworksObject.create(event.getNode())));
             //Also adding the node hovered reset returning null
-            viewer.addNodeHoverResetHandler(new NodeHoverResetHandler() {
-                @Override
-                public void onNodeHoverReset() {
-                    aux.hovered(null);
-                }
-            });
+            viewer.addNodeHoverResetHandler(() -> aux.hovered(null));
         } else if (handler instanceof JsAnalysisResetHandler) {
             final JsAnalysisResetHandler aux = (JsAnalysisResetHandler) handler;
-            viewer.addAnalysisResetHandler(new AnalysisResetHandler() {
-                @Override
-                public void onAnalysisReset() {
-                    aux.analysisReset();
-                }
-            });
+            viewer.addAnalysisResetHandler(aux::analysisReset);
         } else {
             return false;
         }
