@@ -8,18 +8,37 @@
     <groupId>org.reactome.web</groupId>
     <artifactId>fireworksJs</artifactId>
     <packaging>war</packaging>
-    <version>1.0.0</version>
-    <name>GWT Maven Archetype</name>
+    <version>1.3.4-SNAPSHOT</version>
+    <name>Reactome Fireworks Viewer JS</name>
+
+    <description>
+        A genome-wide, hierarchical visualisation of Reactome pathways in a space-filling graph
+    </description>
+
+    <organization>
+        <name>The European Bioinformatics Institute</name>
+        <url>http://www.ebi.ac.uk/</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <id>fabregat</id>
+            <name>Antonio Fabregat</name>
+            <email>fabregat@ebi.ac.uk</email>
+            <organization>http://www.ebi.ac.uk/</organization>
+        </developer>
+    </developers>
 
     <properties>
-        <!-- Convenience property to set the GWT version -->
-        <gwtVersion>2.7.0</gwtVersion>
+        <gwtVersion>2.8.0</gwtVersion>
+        <gwtStyle>OBF</gwtStyle> <!-- OBF | PRETTY | DETAILED -->
 
-        <!-- GWT needs at least java 1.6 -->
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <appModule>org.reactome.web.fireworks</appModule>
+        <appName>${appModule}</appName>
     </properties>
 
     <dependencyManagement>
@@ -37,31 +56,23 @@
     <dependencies>
         <dependency>
             <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-servlet</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
+            <artifactId>gwt-codeserver</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.reactome.web</groupId>
             <artifactId>fireworks</artifactId>
-            <version>1.1.1-SNAPSHOT</version>
+            <version>1.3.4-SNAPSHOT</version>
         </dependency>
 
         <dependency>
