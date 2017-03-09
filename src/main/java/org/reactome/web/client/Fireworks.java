@@ -101,6 +101,10 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
         return fireworks;
     }
 
+    public void flagItems(String identifier) {
+        viewer.flagItems(identifier);
+    }
+
     public void highlightNode(String stableIdentifier) {
         viewer.highlightNode(stableIdentifier);
     }
@@ -122,6 +126,10 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
     }
 
     public void onFireworksLoaded(final JsFireworksLoadedHandler handler) {
+        if (!addHandler(handler)) handlers.add(handler);
+    }
+
+    public void onNodesFlaggedReset(final JsNodesFlaggedResetHandler handler){
         if (!addHandler(handler)) handlers.add(handler);
     }
 
@@ -225,6 +233,9 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
         } else if (handler instanceof JsAnalysisResetHandler) {
             final JsAnalysisResetHandler aux = (JsAnalysisResetHandler) handler;
             viewer.addAnalysisResetHandler(aux::analysisReset);
+        } else if (handler instanceof JsNodesFlaggedResetHandler) {
+            final JsNodesFlaggedResetHandler aux = (JsNodesFlaggedResetHandler) handler;
+            viewer.addNodeFlaggedResetHandler(() -> aux.flaggedReset());
         } else {
             return false;
         }
