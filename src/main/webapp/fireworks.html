@@ -116,6 +116,20 @@
             </tr>
             <tr>
                 <td>
+                    <b>flagItems(String identifier)</b> :: void
+                </td>
+                <td>
+                    Item identifier <br>
+                    <b>identifier</b> : string
+                </td>
+                <td>
+                    Flags pathways where the identifier is found. It accepts main identifiers but also
+                    cross references, and gene names as well as pathways and physical entities stable
+                    identifiers
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <b>highlightNode(stId)</b> :: void
                 </td>
                 <td>
@@ -210,6 +224,17 @@
             </tr>
             <tr>
                 <td>
+                    <b>onNodesFlaggedReset(function())</b> :: void
+                </td>
+                <td>
+                    The function receives no parameters
+                </td>
+                <td>
+                    The function is called when the user resets the flagged items
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <b>onNodeSelected(function(obj))</b> :: void
                 </td>
                 <td>
@@ -260,7 +285,7 @@
                     The function receives no parameters
                 </td>
                 <td>
-                    The function is called when the users resets the analysis overlay<br><br>
+                    The function is called when the user resets the analysis overlay<br><br>
                     fireworks.onAnalysisReset(function(){ /* your code here */ });
                 </td>
             </tr>
