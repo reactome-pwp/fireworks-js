@@ -24,7 +24,7 @@ import java.util.Set;
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess"})
 @ExportPackage("Reactome")
 @Export("Fireworks")
 public class Fireworks implements FireworksLoader.Handler, Exportable {
@@ -235,7 +235,7 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
             viewer.addAnalysisResetHandler(aux::analysisReset);
         } else if (handler instanceof JsNodesFlaggedResetHandler) {
             final JsNodesFlaggedResetHandler aux = (JsNodesFlaggedResetHandler) handler;
-            viewer.addNodeFlaggedResetHandler(() -> aux.flaggedReset());
+            viewer.addNodeFlaggedResetHandler(aux::flaggedReset);
         } else {
             return false;
         }
