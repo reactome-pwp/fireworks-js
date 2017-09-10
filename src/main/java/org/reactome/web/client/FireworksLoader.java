@@ -4,16 +4,17 @@ import com.google.gwt.http.client.*;
 import org.reactome.web.fireworks.client.FireworksFactory;
 import org.reactome.web.fireworks.client.FireworksViewer;
 import org.reactome.web.fireworks.util.Console;
-import org.reactome.web.pwp.model.classes.DatabaseObject;
-import org.reactome.web.pwp.model.classes.Species;
-import org.reactome.web.pwp.model.factory.DatabaseObjectFactory;
-import org.reactome.web.pwp.model.handlers.DatabaseObjectCreatedHandler;
-import org.reactome.web.pwp.model.util.LruCache;
+import org.reactome.web.pwp.model.client.classes.DatabaseObject;
+import org.reactome.web.pwp.model.client.classes.Species;
+import org.reactome.web.pwp.model.client.common.ContentClientHandler;
+import org.reactome.web.pwp.model.client.content.ContentClient;
+import org.reactome.web.pwp.model.client.content.ContentClientError;
+import org.reactome.web.pwp.model.client.util.LruCache;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
  */
-public class FireworksLoader implements DatabaseObjectCreatedHandler,  RequestCallback {
+public class FireworksLoader implements ContentClientHandler.ObjectLoaded<DatabaseObject>,  RequestCallback {
 
     public interface Handler {
         void onFireworksViewerCreated(FireworksViewer fireworks);
@@ -34,7 +35,7 @@ public class FireworksLoader implements DatabaseObjectCreatedHandler,  RequestCa
         if(cache.keySet().contains(target)){
             handler.onFireworksViewerCreated(cache.get(target));
         } else {
-            DatabaseObjectFactory.get(species, this);
+            ContentClient.query(species, this);
         }
     }
 
@@ -44,7 +45,7 @@ public class FireworksLoader implements DatabaseObjectCreatedHandler,  RequestCa
 
 
     @Override
-    public void onDatabaseObjectLoaded(DatabaseObject databaseObject) {
+    public void onObjectLoaded(DatabaseObject databaseObject) {
         if (databaseObject instanceof Species) {
             Species species = (Species) databaseObject;
             loadFireworksJson(species);
@@ -52,6 +53,16 @@ public class FireworksLoader implements DatabaseObjectCreatedHandler,  RequestCa
             target = null;
             Console.error("The provided identifier is not a valid species in Reactome");
         }
+    }
+
+    @Override
+    public void onContentClientException(ContentClientHandler.Type type, String message) {
+        Console.error(message);
+    }
+
+    @Override
+    public void onContentClientError(ContentClientError error) {
+        Console.error(error.getMessage());
     }
 
     private void loadFireworksJson(Species species){
@@ -64,11 +75,6 @@ public class FireworksLoader implements DatabaseObjectCreatedHandler,  RequestCa
         } catch (RequestException ex) {
             handler.onFireworksLoadError(ex);
         }
-    }
-
-    @Override
-    public void onDatabaseObjectError(Throwable exception) {
-        Console.error(exception.getMessage());
     }
 
     @Override

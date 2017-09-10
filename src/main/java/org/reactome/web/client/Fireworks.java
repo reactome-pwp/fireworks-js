@@ -11,7 +11,7 @@ import org.reactome.web.client.model.FireworksObject;
 import org.reactome.web.client.model.JsProperties;
 import org.reactome.web.fireworks.client.FireworksFactory;
 import org.reactome.web.fireworks.client.FireworksViewer;
-import org.reactome.web.pwp.model.client.RESTFulClient;
+import org.reactome.web.pwp.model.client.content.ContentClient;
 import org.timepedia.exporter.client.Export;
 import org.timepedia.exporter.client.ExportPackage;
 import org.timepedia.exporter.client.Exportable;
@@ -76,7 +76,7 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
         Fireworks fireworks = new Fireworks();
 
         if (loader == null) {
-            RESTFulClient.SERVER = server;
+            ContentClient.SERVER = server;
             AnalysisClient.SERVER = server;
             FireworksFactory.SERVER = server;
             FireworksFactory.ILLUSTRATION_SERVER = SERVER;
