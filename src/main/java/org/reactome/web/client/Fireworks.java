@@ -29,7 +29,7 @@ import java.util.Set;
 @Export("Fireworks")
 public class Fireworks implements FireworksLoader.Handler, Exportable {
 
-    protected static final String SERVER = "http://reactome.org";
+    protected static final String SERVER = "https://reactome.org";
 
     private static String holder;
 
