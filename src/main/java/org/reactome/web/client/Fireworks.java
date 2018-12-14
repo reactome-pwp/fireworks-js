@@ -101,8 +101,8 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
         return fireworks;
     }
 
-    public void flagItems(String identifier) {
-        viewer.flagItems(identifier);
+    public void flagItems(String identifier, Boolean includeInteractors) {
+        viewer.flagItems(identifier, includeInteractors);
     }
 
     public void highlightNode(String stableIdentifier) {
