@@ -101,7 +101,7 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
         return fireworks;
     }
 
-    public void flagItems(String identifier, Boolean includeInteractors) {
+    public void flagItems(String identifier, boolean includeInteractors) {
         viewer.flagItems(identifier, includeInteractors);
     }
 
@@ -109,11 +109,11 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
         viewer.highlightNode(stableIdentifier);
     }
 
-    public void highlightNode(Long dbIdentifier) {
+    public void highlightNode(long dbIdentifier) {
         viewer.highlightNode(dbIdentifier);
     }
 
-    public void loadSpecies(Long dbId) {
+    public void loadSpecies(long dbId) {
         loader.load(dbId);
     }
 
@@ -166,7 +166,7 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
         viewer.selectNode(stableIdentifier);
     }
 
-    public void selectNode(Long dbIdentifier) {
+    public void selectNode(long dbIdentifier) {
         viewer.selectNode(dbIdentifier);
     }
 
