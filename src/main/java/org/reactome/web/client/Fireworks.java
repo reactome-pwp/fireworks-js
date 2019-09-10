@@ -6,6 +6,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import org.reactome.web.analysis.client.AnalysisClient;
+import org.reactome.web.analysis.client.filter.ResultFilter;
 import org.reactome.web.client.handlers.*;
 import org.reactome.web.client.model.FireworksObject;
 import org.reactome.web.client.model.JsProperties;
@@ -18,11 +19,14 @@ import org.timepedia.exporter.client.Exportable;
 import org.timepedia.exporter.client.NoExport;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
 /**
- * @author Antonio Fabregat <fabregat@ebi.ac.uk>
+ * @author Guilherme Viteri <gviteri@ebi.ac.uk>
+ * @author Kostas sidiropoulos <ksidiro@ebi.ac.uk>
+ * @author Antonio Fabregat
  */
 @SuppressWarnings({"unused", "WeakerAccess"})
 @ExportPackage("Reactome")
@@ -172,11 +176,21 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
 
     public void setAnalysisToken(String token, String resource) {
         if (viewer != null) {
-            viewer.setAnalysisToken(token, resource);
+            ResultFilter resultFilter = new ResultFilter();
+            resultFilter.setResource(resource);
+            viewer.setAnalysisToken(token, resultFilter);
         } else {
             this.analysisToken = token;
             this.analysisResource = resource;
         }
+    }
+
+    public List<String> getAvailableColorProfiles() {
+        return viewer.getAvailableColorProfiles();
+    }
+
+    public void setColorProfile(String colorProfile) {
+        viewer.setColorProfile(colorProfile);
     }
 
     public void showAll() {
@@ -191,7 +205,9 @@ public class Fireworks implements FireworksLoader.Handler, Exportable {
             addHandler(handler);
         }
         if (analysisToken != null && analysisResource != null) {
-            viewer.setAnalysisToken(analysisToken, analysisResource);
+            ResultFilter rf = new ResultFilter();
+            rf.setResource(analysisResource);
+            viewer.setAnalysisToken(analysisToken, rf);
         }
     }
 
