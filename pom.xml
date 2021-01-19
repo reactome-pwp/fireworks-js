@@ -8,7 +8,7 @@
     <groupId>org.reactome.web</groupId>
     <artifactId>fireworks-js</artifactId>
     <packaging>war</packaging>
-    <version>1.9.0-SNAPSHOT</version>
+    <version>1.9.0</version>
     <name>Reactome Fireworks Viewer JS</name>
 
     <description>
@@ -47,7 +47,7 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <fireworks-gwt>1.9.0-SNAPSHOT</fireworks-gwt>
+        <fireworks-gwt>1.9.0</fireworks-gwt>
 
         <appModule>org.reactome.web.fireworks</appModule>
         <appName>${appModule}</appName>
