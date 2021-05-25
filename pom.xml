@@ -9,7 +9,7 @@
     <artifactId>fireworks-js</artifactId>
     <packaging>war</packaging>
     <version>1.9.1</version>
-    <name>Reactome Fireworks Viewer JS</name>
+    <name>Fireworks Viewer JS</name>
 
     <description>
         A genome-wide, hierarchical visualisation of Reactome pathways in a space-filling graph
