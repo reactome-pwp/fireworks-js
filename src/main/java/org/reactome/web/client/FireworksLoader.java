@@ -10,6 +10,7 @@ import org.reactome.web.pwp.model.client.common.ContentClientHandler;
 import org.reactome.web.pwp.model.client.content.ContentClient;
 import org.reactome.web.pwp.model.client.content.ContentClientError;
 import org.reactome.web.pwp.model.client.util.LruCache;
+import org.reactome.web.pwp.model.client.util.ResponseUtils;
 
 /**
  * @author Antonio Fabregat <fabregat@ebi.ac.uk>
@@ -87,7 +88,7 @@ public class FireworksLoader implements ContentClientHandler.ObjectLoaded<Databa
                 handler.onFireworksViewerCreated(fireworks);
                 return;
             default:
-                handler.onFireworksLoadError(new Exception(response.getStatusText()));
+                handler.onFireworksLoadError(new Exception(ResponseUtils.getStatusText(response.getStatusCode())));
         }
     }
 
