@@ -23,7 +23,7 @@ public class JsProperties {
 
     public int getInt(String name) {
         String val = get(name);
-        return val == null ? 0 : Integer.valueOf(val);
+        return val == null ? 0 : Integer.parseInt(val);
     }
 
     public int getInt(String name, int defaultValue){
